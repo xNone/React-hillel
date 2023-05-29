@@ -8,7 +8,7 @@ class App extends React.Component {
       posts: [],
       editedTitle: '',
       showBlock: false,
-      notification: '123444',
+      notification: '',
       timer: null
     };
   }
