@@ -8,7 +8,7 @@ class App extends React.Component {
       posts: [],
       editedTitle: '',
       showBlock: false,
-      notification: '123444',
+      notification: '',
       timer: null
     };
   }
@@ -52,7 +52,7 @@ class App extends React.Component {
     this.setState({ editedTitle: event.target.value });
   };
 
-  editPost = (postId, postTitle) => {
+  editPost = (postId) => {
     fetch(`https://jsonplaceholder.typicode.com/posts/${postId}`, {
       method: 'PATCH',
       body: JSON.stringify({
