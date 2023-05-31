@@ -9,21 +9,20 @@ class App extends React.Component {
       editedTitle: '',
       showBlock: false,
       notification: '',
-      timer: null
     };
   }
 
   componentDidMount() {
     this.fetchPosts();
-    this.setState({
-      timer: setTimeout(() => {
-        this.setState({ showBlock: false });
-      }, 5000)
-    });
   }
 
-  componentWillUnmount() {
-    clearTimeout(this.state.timer);
+  timer() {
+    setTimeout(() => {
+      this.setState({
+        showBlock: false,
+        notification: ''
+      });
+    }, 5000);
   }
 
   fetchPosts() {
@@ -34,18 +33,8 @@ class App extends React.Component {
           posts: json
         }))
       .catch(error => {
-        console.log(error);
+        throw new Error(error);
       });
-  }
-
-  timer() {
-    clearTimeout(this.state.timer);
-
-    this.setState({
-      timer: setTimeout(() => {
-        this.setState({ showBlock: false });
-      }, 5000)
-    });
   }
 
   handleTitleChange = event => {
@@ -63,18 +52,22 @@ class App extends React.Component {
       },
     })
       .then(() => {
-        this.setState(prevState => ({
-          posts: prevState.posts.map(post =>
-            post.id === postId ? { ...post, title: this.state.editedTitle } : post
-          ),
-          editedTitle: '',
-          showBlock: true,
-          notification: 'The post was updated!'
-        }));
-        this.timer();
+        this.setState(
+          {
+            posts: this.state.posts.map(post =>
+              post.id === postId ? { ...post, title: this.state.editedTitle } : post
+            ),
+            editedTitle: '',
+            showBlock: true,
+            notification: 'The post was updated!'
+          },
+          () => {
+            this.timer();
+          }
+        );
       })
       .catch(error => {
-        console.log(error);
+        throw new Error(error);
       });
   }
 
@@ -82,16 +75,22 @@ class App extends React.Component {
     fetch(`https://jsonplaceholder.typicode.com/posts/${postId}`, {
       method: 'DELETE'
     })
+      .then((response) => response.json())
+      .then((json) => console.log(json))
       .then(() => {
-        this.setState(prevState => ({
-          posts: prevState.posts.filter(post => post.id !== postId),
-          showBlock: true,
-          notification: 'The post was deleted!'
-        }));
-        this.timer();
+        this.setState(
+          {
+            posts: this.state.posts.filter(post => post.id !== postId),
+            showBlock: true,
+            notification: 'The post was deleted!'
+          },
+          () => {
+            this.timer();
+          }
+        );
       })
       .catch(error => {
-        console.log(error);
+        throw new Error(error);
       });
   }
 
