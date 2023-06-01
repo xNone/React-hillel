@@ -12,9 +12,11 @@ const Form = ({ email, password, firstname, lastname, errors, handleChange }) =>
         value={value}
         onChange={handleChange}
       />
-      <p>
-        <span>Warning:</span> {error}
-      </p>
+      {error &&
+        <p>
+          <span>Warning:</span> {error}
+        </p>
+      }
     </label>
   );
 
