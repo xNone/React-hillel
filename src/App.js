@@ -1,114 +1,75 @@
 import './App.css';
 import React from 'react';
+import Form from './form';
+import { validationRules } from './validation';
 
 class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      posts: [],
-      editedTitle: '',
-      showBlock: false,
-      notification: '',
+      email: '',
+      password: '',
+      firstname: '',
+      lastname: '',
+      errors: {},
+      isFormValid: false
     };
   }
 
-  componentDidMount() {
-    this.fetchPosts();
+  checkField = (fieldName, value) => {
+    const { pattern, message } = validationRules[fieldName];
+
+    if (pattern && !pattern.test(value)) return message;
+
+    return '';
   }
 
-  timer() {
-    setTimeout(() => {
-      this.setState({
-        showBlock: false,
-        notification: ''
-      });
-    }, 5000);
+  checkForm = () => {
+    const errors = {};
+
+    for (const fieldName in validationRules) {
+      const value = this.state[fieldName];
+      errors[fieldName] = this.checkField(fieldName, value);
+    }
+
+    this.setState({ errors });
+    return Object.values(errors).every((error) => error === '');
   }
 
-  fetchPosts() {
-    fetch('https://jsonplaceholder.typicode.com/posts')
-      .then((response) => response.json())
-      .then((json) =>
-        this.setState({
-          posts: json
-        }))
-      .catch(error => {
-        throw new Error(error);
-      });
-  }
-
-  handleTitleChange = event => {
-    this.setState({ editedTitle: event.target.value });
+  handleChange = (e) => {
+    const { name, value } = e.target;
+    this.setState({ [name]: value });
   };
 
-  editPost = (postId) => {
-    fetch(`https://jsonplaceholder.typicode.com/posts/${postId}`, {
-      method: 'PATCH',
-      body: JSON.stringify({
-        title: this.state.editedTitle,
-      }),
-      headers: {
-        'Content-type': 'application/json; charset=UTF-8',
-      },
-    })
-      .then(() => {
-        this.setState(
-          {
-            posts: this.state.posts.map(post =>
-              post.id === postId ? { ...post, title: this.state.editedTitle } : post
-            ),
-            editedTitle: '',
-            showBlock: true,
-            notification: 'The post was updated!'
-          },
-          () => {
-            this.timer();
-          }
-        );
-      })
-      .catch(error => {
-        throw new Error(error);
-      });
+  componentDidMount() {
+    this.setState({ isFormValid: this.checkForm() });
   }
 
-  deletePost = postId => {
-    fetch(`https://jsonplaceholder.typicode.com/posts/${postId}`, {
-      method: 'DELETE'
-    })
-      .then((response) => response.json())
-      .then((json) => console.log(json))
-      .then(() => {
-        this.setState(
-          {
-            posts: this.state.posts.filter(post => post.id !== postId),
-            showBlock: true,
-            notification: 'The post was deleted!'
-          },
-          () => {
-            this.timer();
-          }
-        );
-      })
-      .catch(error => {
-        throw new Error(error);
-      });
+  componentDidUpdate(prevProps, prevState) {
+    if (
+      prevState.email !== this.state.email ||
+      prevState.password !== this.state.password ||
+      prevState.firstname !== this.state.firstname ||
+      prevState.lastname !== this.state.lastname
+    ) {
+      this.setState({ isFormValid: this.checkForm() });
+    }
   }
 
   render() {
     return (
       <div className='container'>
-        {this.state.posts.map(post => (
-          <div className='post' key={post.id}>
-            <h3>{post.title}</h3>
-            <p>{post.body}</p>
-            <div className='buttons'>
-              <input onChange={this.handleTitleChange} />
-              <button className='editButton' onClick={() => this.editPost(post.id)}>Edit</button>
-              <button className='deleteButton' onClick={() => this.deletePost(post.id)}>Delete</button>
-            </div>
-          </div>
-        ))}
-        {this.state.showBlock && <div className='info'>{this.state.notification}</div>}
+        <form onSubmit={this.handleSubmit}>
+          <Form
+            email={this.state.email}
+            password={this.state.password}
+            firstname={this.state.firstname}
+            lastname={this.state.lastname}
+            errors={this.state.errors}
+            handleChange={this.handleChange}
+          />
+          <button type='sumbit' disabled={!this.state.isFormValid}>Submit</button>
+        </form>
       </div>
     )
   }
