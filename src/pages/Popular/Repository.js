@@ -1,5 +1,5 @@
-import Loader from "./Loader";
-import RepositoryList from "./RepositoryList";
+import Loader from './Loader';
+import RepositoryList from './RepositoryList';
 
 const Repository = ({ repos, loading }) => {
   const renderRepos = () => {

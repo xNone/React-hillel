@@ -1,14 +1,14 @@
-import { useState, useEffect } from "react";
-import { fetchPopularRepos } from "./api";
-import Tabs from "./Tabs";
-import Repository from "./Repository";
-import { useSearchParams } from "react-router-dom";
+import { useState, useEffect } from 'react';
+import { fetchPopularRepos } from '../../api';
+import Tabs from '../../components/navigation/Tabs';
+import Repository from './Repository';
+import { useSearchParams } from 'react-router-dom';
 
-const languages = ["All", "JavaScript", "Ruby", "Java", "CSS", "Python"];
+const languages = ['All', 'JavaScript', 'Ruby', 'Java', 'CSS', 'Python'];
 
 const Popular = () => {
   const [searchParams, setSearchParams] = useSearchParams();
-  const selectedLanguage = searchParams.get("language") || "All";
+  const selectedLanguage = searchParams.get('language') || 'All';
 
   const [loading, setLoading] = useState(false);
   const [repos, setRepos] = useState([]);
@@ -17,7 +17,7 @@ const Popular = () => {
   const handleTabClick = (language) => {
     setSearchParams({ language });
   };
-  
+
   useEffect(() => {
     setLoading(true);
 
@@ -30,6 +30,8 @@ const Popular = () => {
         setLoading(false);
       });
   }, [selectedLanguage]);
+
+  if (error) return <p>Error: {error}</p>;
 
   return (
     <div>
