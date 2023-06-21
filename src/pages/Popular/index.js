@@ -1,4 +1,4 @@
-import Tabs from '../../components/navigation/Tabs'
+import Tabs from '../../components/navigation/Tabs';
 import Repository from './Repository';
 
 const Popular = () => (

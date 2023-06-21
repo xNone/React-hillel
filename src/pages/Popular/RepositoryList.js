@@ -1,8 +1,7 @@
-import { useSelector } from "react-redux";
-
+import { useSelector } from 'react-redux';
 
 const RepositoryList = () => {
-  const repos = useSelector((state) => state.popularReducer.repos);
+  const repos = useSelector((state) => state.popular.repos);
 
   return (
     <ul className='popular-list'>
