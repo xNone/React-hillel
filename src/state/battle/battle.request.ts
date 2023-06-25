@@ -1,9 +1,13 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { makeBattle } from '../../api';
+import { IBattleRepos } from '../../types/battle.types';
 
 export const getRepos = createAsyncThunk(
   'battle/getRepos',
-  async ({ playerOneName, playerTwoName }, { rejectWithValue, dispatch }) => {
+  async (
+    { playerOneName, playerTwoName }: IBattleRepos,
+    { rejectWithValue, dispatch }
+  ): Promise<any> => {
     try {
       return await makeBattle([playerOneName, playerTwoName]);
     } catch (error) {

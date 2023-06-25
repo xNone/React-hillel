@@ -3,10 +3,15 @@ import PlayerPreview from './PlayerPreview';
 import { Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { deleteUser } from '../../state/battle/battle.slice';
+import { FC, ReactElement } from 'react';
+import { AppDispatch, RootState } from '../../state/store';
+import { TUsers } from '../../types/battle.types';
 
-const Battle = () => {
-  const dispatch = useDispatch();
-  const users = useSelector((state) => state.battle.users);
+const Battle: FC = (): ReactElement => {
+  const dispatch = useDispatch<AppDispatch>();
+  const users: TUsers = useSelector(
+    (state: RootState): TUsers => state.battle.users
+  );
 
   return (
     <div>

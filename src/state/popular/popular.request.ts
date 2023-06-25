@@ -4,7 +4,10 @@ import { updateLanguage } from './popular.slice';
 
 export const getRepos = createAsyncThunk(
   'popular/getRepos',
-  async (selectedLanguage, { rejectWithValue, dispatch }) => {
+  async (
+    selectedLanguage: string,
+    { rejectWithValue, dispatch }
+  ): Promise<any> => {
     dispatch(updateLanguage(selectedLanguage));
 
     try {

@@ -1,6 +1,7 @@
+import { FC, ReactElement } from 'react';
 import { Link } from 'react-router-dom';
 
-const Home = () => {
+const Home: FC = (): ReactElement => {
   return (
     <div className='home-container'>
       <h1>GitHub Battle: Battle your friends ... ands stuff</h1>

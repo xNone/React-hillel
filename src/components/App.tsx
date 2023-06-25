@@ -5,7 +5,7 @@ import Popular from '../pages/Popular/index';
 import Battle from '../pages/Battle/index';
 import Nav from './navigation';
 import Results from '../pages/Battle/Results';
-
+import { FC, ReactElement } from 'react';
 
 const router = createBrowserRouter([
   {
@@ -36,7 +36,7 @@ const router = createBrowserRouter([
   },
 ]);
 
-const App = () => {
+const App: FC = (): ReactElement => {
   return (
     <div className='container'>
       <RouterProvider router={router} />

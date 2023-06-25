@@ -1,4 +1,5 @@
-const Loader = () => {
+import { FC, ReactElement } from 'react';
+const Loader:FC = (): ReactElement => {
   return (
     <div className='overlay'>
       <div className='overlay__inner'>

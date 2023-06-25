@@ -1,11 +1,16 @@
 import { useSelector } from 'react-redux';
+import { IRepos, TRepos } from '../../types/popular.types';
+import { ReactElement, FC } from 'react';
+import { RootState } from '../../state/store';
 
-const RepositoryList = () => {
-  const repos = useSelector((state) => state.popular.repos);
+const RepositoryList: FC = (): ReactElement => {
+  const repos: TRepos = useSelector(
+    (state: RootState): TRepos => state.popular.repos
+  );
 
   return (
     <ul className='popular-list'>
-      {repos.map((repo, index) => {
+      {repos.map((repo: IRepos, index: number): ReactElement => {
         return (
           <li key={repo.id} className='popular-item'>
             <div className='popular-rank'>#{index + 1}</div>

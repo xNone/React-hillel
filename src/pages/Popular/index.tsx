@@ -1,7 +1,8 @@
 import Tabs from '../../components/navigation/Tabs';
 import Repository from './Repository';
+import { FC, ReactElement } from 'react';
 
-const Popular = () => (
+const Popular: FC = (): ReactElement => (
   <>
     <Tabs />
     <Repository />
